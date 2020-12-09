@@ -1,14 +1,6 @@
 import 'dart:convert';
 
 class Restaurant {
-  String id;
-  String name;
-  String description;
-  String pictureId;
-  String city;
-  double rating;
-  String menus;
-
   Restaurant({
     this.id,
     this.name,
@@ -16,18 +8,32 @@ class Restaurant {
     this.pictureId,
     this.city,
     this.rating,
-    this.menus,
   });
 
-  Restaurant.fromJson(Map<String, dynamic> restaurant) {
-    id = restaurant['id'];
-    name = restaurant['name'];
-    description = restaurant['description'];
-    pictureId = restaurant['pictureId'];
-    city = restaurant['city'];
-    rating = double.parse(restaurant['rating'].toString());
-    menus = jsonEncode(restaurant['menus']);
-  }
+  String id;
+  String name;
+  String description;
+  String pictureId;
+  String city;
+  double rating;
+
+  factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
+        id: json["id"],
+        name: json["name"],
+        description: json["description"],
+        pictureId: json["pictureId"],
+        city: json["city"],
+        rating: json["rating"].toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "description": description,
+        "pictureId": pictureId,
+        "city": city,
+        "rating": rating,
+      };
 }
 
 List<Restaurant> parseRestaurants(String json) {

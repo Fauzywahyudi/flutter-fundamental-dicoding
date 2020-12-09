@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:restoran_app/api/api_restaurant.dart';
 import 'package:restoran_app/models/restaurant.dart';
 import 'package:restoran_app/pages/detail_page.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
@@ -11,25 +15,101 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<List<Restaurant>> getList() async {
+    final response = await http.get(ApiService.list);
+    final List<Restaurant> data = parseRestaurants(response.body);
+    return data;
+  }
+
+  Future<List<Restaurant>> getListSearch() async {
+    final response = await http.get(ApiService.search + _query);
+    final List<Restaurant> data = parseRestaurants(response.body);
+    return data;
+  }
+
+  Future<Null> handleRefresh() async {
+    Completer<Null> completer = new Completer<Null>();
+    new Future.delayed(new Duration(milliseconds: 500)).then((_) {
+      completer.complete();
+      setState(() {});
+    });
+    return completer.future;
+  }
+
+  bool _isSearch = false;
+  String _query = '';
+  var _tecSearch = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Restaurant App'),
-      ),
-      body: FutureBuilder<String>(
-        future: DefaultAssetBundle.of(context)
-            .loadString('assets/local_restaurant.json'),
-        builder: (context, snapshot) {
-          final List<Restaurant> restaurants = parseRestaurants(snapshot.data);
-          return ListView.builder(
-            itemCount: restaurants.length,
-            itemBuilder: (context, index) {
-              return _buildArticleItem(context, restaurants[index]);
+        appBar: buildAppBar(),
+        body: Container(
+          child: FutureBuilder<List>(
+            future: _isSearch ? getListSearch() : getList(),
+            builder: (context, snapshot) {
+              var state = snapshot.connectionState;
+              if (state != ConnectionState.done) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasData) {
+                return RefreshIndicator(
+                  onRefresh: handleRefresh,
+                  child: snapshot.data.isEmpty
+                      ? _noData()
+                      : ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            return _buildArticleItem(
+                                context, snapshot.data[index]);
+                          },
+                        ),
+                );
+              } else if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error.toString()));
+              } else {
+                return Text('');
+              }
             },
-          );
-        },
-      ),
+          ),
+        ));
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: _isSearch ? Colors.blue[200] : Colors.blue,
+      title: _isSearch
+          ? TextField(
+              controller: _tecSearch,
+              onChanged: (v) {
+                setState(() {
+                  _query = v;
+                });
+              },
+              decoration: InputDecoration(
+                  border: InputBorder.none, hintText: 'Search. . .'),
+            )
+          : Text('Restaurant App'),
+      actions: [
+        IconButton(
+            icon: _isSearch
+                ? Icon(
+                    Icons.close,
+                    color: Colors.black38,
+                  )
+                : Icon(Icons.search),
+            onPressed: () {
+              setState(() {
+                _isSearch = !_isSearch;
+                _tecSearch.text = '';
+                _query = '';
+              });
+            }),
+      ],
     );
   }
 
@@ -49,19 +129,14 @@ class _HomePageState extends State<HomePage> {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: Colors.blue[200],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Hero(
-                  tag: restaurant.id,
-                  child: Image.network(
-                    restaurant.pictureId,
+                  color: Colors.blue[200],
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
                     fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+                    image: NetworkImage(
+                      ApiService.smallImage + restaurant.pictureId,
+                    ),
+                  )),
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
@@ -112,6 +187,12 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _noData() {
+    return Center(
+      child: Text('Data Ttdak ditemukan '),
     );
   }
 }
