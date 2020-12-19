@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restoran_app/provider/restaurant_provider.dart';
+import 'package:restoran_app/themes/text_themes.dart';
 import 'package:restoran_app/widget/item_restaurant.dart';
 
 class SearchPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<RestaurantProvider>(
-      create: (_) => RestaurantProvider(),
+      create: (_) => RestaurantProvider(context),
       child: Scaffold(body: Consumer<RestaurantProvider>(
         builder: (context, state, _) {
           if (state.state == ResultState.Loading) {
@@ -39,6 +40,23 @@ class _SearchPageState extends State<SearchPage> {
             return Center(child: Text(state.message));
           } else if (state.state == ResultState.Error) {
             return Center(child: Text(state.message));
+          } else if (state.state == ResultState.NoConnection) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(state.message, style: labelConnection),
+                  SizedBox(height: 30),
+                  RaisedButton(
+                    onPressed: () => state.refresh(),
+                    color: Colors.blue[200],
+                    child: Text('Refresh'),
+                  )
+                ],
+              ),
+            );
           } else {
             return Center(child: Text(''));
           }

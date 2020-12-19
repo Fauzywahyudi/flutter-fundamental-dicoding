@@ -27,3 +27,5 @@ final myTextTheme = TextTheme(
   overline: GoogleFonts.roboto(
       fontSize: 11, fontWeight: FontWeight.w400, letterSpacing: 1.5),
 );
+
+const TextStyle labelConnection = TextStyle(fontSize: 20, color: Colors.grey);

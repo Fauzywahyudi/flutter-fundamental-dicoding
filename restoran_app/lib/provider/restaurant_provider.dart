@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:restoran_app/api/api_restaurant.dart';
 import 'package:restoran_app/models/restaurant.dart';
 import 'package:http/http.dart' as http;
+import 'package:restoran_app/provider/cek_koneksi.dart';
 
-enum ResultState { Loading, NoData, HasData, Error }
+enum ResultState { Loading, NoData, HasData, Error, NoConnection }
 
 class RestaurantProvider extends ChangeNotifier {
-  // final ApiService apiService;
-
-  RestaurantProvider() {
+  final BuildContext context;
+  RestaurantProvider(this.context) {
     _fetchDataRestaurant();
   }
   final apiService = ApiService();
+  final cekConnection = CheckConnection();
 
   String _message = '';
   String _query = '';
@@ -30,10 +31,22 @@ class RestaurantProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void refresh() {
+    _query = query;
+    _fetchDataRestaurant();
+    notifyListeners();
+  }
+
   Future<dynamic> _fetchDataRestaurant() async {
     try {
       _state = ResultState.Loading;
       notifyListeners();
+      final connection = await cekConnection.checkConnection(context);
+      if (!connection.isConnected) {
+        _state = ResultState.NoConnection;
+        notifyListeners();
+        return _message = connection.message;
+      }
       final restaurant = await getDataRestaurant();
       if (restaurant.restaurants.isEmpty) {
         _state = ResultState.NoData;
