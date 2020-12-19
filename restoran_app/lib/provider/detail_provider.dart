@@ -49,7 +49,7 @@ class DetailProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       return DetailRestaurantResult.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to load top Detail Restaurants');
+      throw Exception('Failed to load Detail Restaurants');
     }
   }
 }
