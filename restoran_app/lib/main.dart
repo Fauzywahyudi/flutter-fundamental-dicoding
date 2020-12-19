@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:restoran_app/pages/detail_page.dart';
-import 'package:restoran_app/pages/home.dart';
-import 'package:restoran_app/pages/splashscreen.dart';
+import 'package:restoran_app/pages/detail/detail_page.dart';
+import 'package:restoran_app/pages/home/home.dart';
+import 'package:restoran_app/pages/search/search_page.dart';
+import 'package:restoran_app/pages/splashscreen/splashscreen.dart';
 import 'package:restoran_app/themes/text_themes.dart';
 
 void main() {
@@ -23,8 +24,9 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashScreen.routeName: (context) => SplashScreen(),
         HomePage.routeName: (context) => HomePage(),
+        SearchPage.routeName: (context) => SearchPage(),
         DetailPage.routeName: (context) => DetailPage(
-              restaurant: ModalRoute.of(context).settings.arguments,
+              id: ModalRoute.of(context).settings.arguments,
             ),
       },
     );
