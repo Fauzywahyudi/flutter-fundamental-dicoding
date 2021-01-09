@@ -7,7 +7,8 @@ class RestaurantName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = Provider.of<DetailProvider>(context);
-    return Card(
+    return Container(
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -15,10 +16,11 @@ class RestaurantName extends StatelessWidget {
           children: [
             Text(
               state.result.restaurant.name,
-              style: Theme.of(context).textTheme.headline4.apply(
+              style: Theme.of(context).textTheme.headline5.apply(
                     color: Colors.blue,
                   ),
             ),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

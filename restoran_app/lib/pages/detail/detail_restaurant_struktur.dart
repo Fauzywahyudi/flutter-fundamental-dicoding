@@ -9,6 +9,7 @@ class ListDetailRestaurant extends StatelessWidget {
     return Container(
       color: Colors.grey[200],
       child: ListView(
+        padding: EdgeInsets.only(top: 0),
         children: [
           RestaurantName(),
           RestaurantDescription(),

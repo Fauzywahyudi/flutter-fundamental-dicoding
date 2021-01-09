@@ -5,20 +5,15 @@ import 'package:restoran_app/pages/detail/my_sliver_appbar.dart';
 import 'package:restoran_app/provider/detail_provider.dart';
 import 'package:restoran_app/themes/text_themes.dart';
 
-class DetailPage extends StatefulWidget {
+class DetailPage extends StatelessWidget {
   static const routeName = '/detail_restaurant';
   final String id;
   const DetailPage({@required this.id});
 
   @override
-  _DetailPageState createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<DetailProvider>(
-      create: (_) => DetailProvider(context, id: widget.id),
+      create: (_) => DetailProvider(context, id: id),
       child: Scaffold(
         body: Consumer<DetailProvider>(
           builder: (context, state, _) {
@@ -26,6 +21,7 @@ class _DetailPageState extends State<DetailPage> {
               return Center(child: CircularProgressIndicator());
             } else if (state.state == ResultState.HasData) {
               return NestedScrollView(
+                controller: state.controller,
                 headerSliverBuilder: (context, isScrolled) {
                   return [
                     MySliverAppBar(),

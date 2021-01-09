@@ -1,41 +1,51 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:restoran_app/api/api_restaurant.dart';
 import 'package:restoran_app/models/restaurant.dart';
 import 'package:restoran_app/provider/cek_koneksi.dart';
+import 'package:restoran_app/provider/data_shared.dart';
 
 enum ResultState { Loading, NoData, HasData, Error, NoConnection }
 
-class RestaurantProvider extends ChangeNotifier {
+class FavoriteProvider extends ChangeNotifier {
   final BuildContext context;
-  RestaurantProvider(this.context) {
-    _fetchDataRestaurant();
+  FavoriteProvider(this.context) {
+    _fetchDataFavorite();
   }
   final apiService = ApiService();
   final cekConnection = CheckConnection();
+  final dataShared = DataShared();
 
   String _message = '';
   String _query = '';
   ResultState _state;
   RestaurantResult _restaurantResult;
+  List<Restaurant> _listRestaurant;
 
   String get message => _message;
   String get query => _query;
   ResultState get state => _state;
   RestaurantResult get result => _restaurantResult;
+  List<Restaurant> get listRestaurant => _listRestaurant;
 
   void setQuery(String query) {
     _query = query;
-    _fetchDataRestaurant();
+    _fetchDataFavorite();
     notifyListeners();
   }
 
-  void refresh() {
-    _query = query;
-    _fetchDataRestaurant();
-    notifyListeners();
+  Future<Null> refresh() {
+    Completer<Null> completer = new Completer<Null>();
+    new Future.delayed(new Duration(milliseconds: 500)).then((_) {
+      completer.complete();
+      _fetchDataFavorite();
+      notifyListeners();
+    });
+    return completer.future;
   }
 
-  Future<dynamic> _fetchDataRestaurant() async {
+  Future<dynamic> _fetchDataFavorite() async {
     try {
       _state = ResultState.Loading;
       notifyListeners();
@@ -45,20 +55,30 @@ class RestaurantProvider extends ChangeNotifier {
         notifyListeners();
         return _message = connection.message;
       }
-      final restaurant = await apiService.getDataRestaurant(query);
-      if (restaurant.restaurants.isEmpty) {
+      final restaurant = await dataShared.getAllFavorite();
+      if (restaurant.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();
         return _message = 'Empty Data';
       } else {
         _state = ResultState.HasData;
         notifyListeners();
-        return _restaurantResult = restaurant;
+        return _listRestaurant = restaurant;
       }
     } catch (e) {
       _state = ResultState.Error;
       notifyListeners();
       return _message = 'Error --> $e';
+    }
+  }
+
+  Future unSetFavorite(Restaurant data) async {
+    try {
+      final success = await dataShared.unSetDataFavorite(data);
+      if (success) _fetchDataFavorite();
+      notifyListeners();
+    } catch (e) {
+      print(e);
     }
   }
 }
