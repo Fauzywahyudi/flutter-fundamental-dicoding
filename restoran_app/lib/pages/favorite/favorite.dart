@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restoran_app/pages/favorite/add_favorite.dart';
 import 'package:restoran_app/provider/favorite_provider.dart';
 import 'package:restoran_app/themes/text_themes.dart';
 import 'package:restoran_app/widget/item_restaurant.dart';
@@ -11,29 +12,35 @@ class Favorite extends StatelessWidget {
     return ChangeNotifierProvider<FavoriteProvider>(
       create: (_) => FavoriteProvider(context),
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
-        ),
+        floatingActionButton:
+            Consumer<FavoriteProvider>(builder: (context, state, _) {
+          return FloatingActionButton(
+            onPressed: () => Navigator.pushNamed(context, AddFavorite.routeName)
+                .then((value) {
+              if (value != null) state.refresh();
+            }),
+            child: Icon(Icons.add),
+          );
+        }),
         body: NestedScrollView(
           headerSliverBuilder: (context, isScroll) {
             return [_buildSliverAppBar()];
           },
           body: Consumer<FavoriteProvider>(
             builder: (context, state, _) {
-              if (state.state == ResultState.Loading) {
+              if (state.state == FavoriteState.Loading) {
                 return Center(child: CircularProgressIndicator());
-              } else if (state.state == ResultState.HasData) {
+              } else if (state.state == FavoriteState.HasData) {
                 return _buildList(state);
-              } else if (state.state == ResultState.NoData) {
+              } else if (state.state == FavoriteState.NoData) {
                 return Center(
                   child: Text(state.message, style: labelConnection),
                 );
-              } else if (state.state == ResultState.Error) {
+              } else if (state.state == FavoriteState.Error) {
                 return Center(
                   child: Text(state.message, style: labelConnection),
                 );
-              } else if (state.state == ResultState.NoConnection) {
+              } else if (state.state == FavoriteState.NoConnection) {
                 return _buildRefresh(context, state);
               } else {
                 return Center(child: Text(''));
@@ -112,9 +119,68 @@ class Favorite extends StatelessWidget {
   }
 }
 
-class DialogAddFavorite extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog();
-  }
-}
+// class DialogAddFavorite extends StatefulWidget {
+//   @override
+//   _DialogAddFavoriteState createState() => _DialogAddFavoriteState();
+// }
+
+// class _DialogAddFavoriteState extends State<DialogAddFavorite> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MultiProvider(
+//       providers: [
+//         ChangeNotifierProvider<RestaurantProvider>(
+//             lazy: true, create: (_) => RestaurantProvider(context)),
+//         ChangeNotifierProvider<FavoriteProvider>(
+//             create: (_) => FavoriteProvider(context)),
+//       ],
+//       child: AlertDialog(
+//         title: Text('Add Favorite'),
+//         content: SingleChildScrollView(
+//           child: Consumer<RestaurantProvider>(builder: (context, state, _) {
+//             if (state.state == ResultState.Loading) {
+//               return Center(child: CircularProgressIndicator());
+//             } else if (state.state == ResultState.HasData) {
+//               print(state.result.restaurants[0].name);
+//               return Container();
+//               // return Container(
+//               //   height: MediaQuery.of(context).size.width * 0.5,
+//               //   child: ListView.builder(
+//               //     itemCount: state.result.restaurants.length,
+//               //     itemBuilder: (context, index) {
+//               //       return ListTile(
+//               //         title: Text(state.result.restaurants[index].name),
+//               //       );
+//               //     },
+//               //   ),
+//               // );
+//             } else if (state.state == ResultState.NoData) {
+//               return Center(child: Text(state.message));
+//             } else if (state.state == ResultState.Error) {
+//               return Center(child: Text(state.message));
+//             } else if (state.state == ResultState.NoConnection) {
+//               return Container(
+//                 width: MediaQuery.of(context).size.width,
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.center,
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Text(state.message, style: labelConnection),
+//                     SizedBox(height: 30),
+//                     RaisedButton(
+//                       onPressed: () => state.refresh(),
+//                       color: Colors.blue[200],
+//                       child: Text('Refresh'),
+//                     )
+//                   ],
+//                 ),
+//               );
+//             } else {
+//               return Center(child: Text(''));
+//             }
+//           }),
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -6,7 +6,7 @@ import 'package:restoran_app/models/restaurant.dart';
 import 'package:restoran_app/provider/cek_koneksi.dart';
 import 'package:restoran_app/provider/data_shared.dart';
 
-enum ResultState { Loading, NoData, HasData, Error, NoConnection }
+enum FavoriteState { Loading, NoData, HasData, Error, NoConnection }
 
 class FavoriteProvider extends ChangeNotifier {
   final BuildContext context;
@@ -19,13 +19,13 @@ class FavoriteProvider extends ChangeNotifier {
 
   String _message = '';
   String _query = '';
-  ResultState _state;
+  FavoriteState _state;
   RestaurantResult _restaurantResult;
   List<Restaurant> _listRestaurant;
 
   String get message => _message;
   String get query => _query;
-  ResultState get state => _state;
+  FavoriteState get state => _state;
   RestaurantResult get result => _restaurantResult;
   List<Restaurant> get listRestaurant => _listRestaurant;
 
@@ -47,26 +47,26 @@ class FavoriteProvider extends ChangeNotifier {
 
   Future<dynamic> _fetchDataFavorite() async {
     try {
-      _state = ResultState.Loading;
+      _state = FavoriteState.Loading;
       notifyListeners();
       final connection = await cekConnection.checkConnection(context);
       if (!connection.isConnected) {
-        _state = ResultState.NoConnection;
+        _state = FavoriteState.NoConnection;
         notifyListeners();
         return _message = connection.message;
       }
       final restaurant = await dataShared.getAllFavorite();
       if (restaurant.isEmpty) {
-        _state = ResultState.NoData;
+        _state = FavoriteState.NoData;
         notifyListeners();
         return _message = 'Empty Data';
       } else {
-        _state = ResultState.HasData;
+        _state = FavoriteState.HasData;
         notifyListeners();
         return _listRestaurant = restaurant;
       }
     } catch (e) {
-      _state = ResultState.Error;
+      _state = FavoriteState.Error;
       notifyListeners();
       return _message = 'Error --> $e';
     }

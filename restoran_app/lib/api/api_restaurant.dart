@@ -1,3 +1,4 @@
+import 'package:restoran_app/models/detail_restaurant.dart';
 import 'package:restoran_app/models/restaurant.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,6 +25,15 @@ class ApiService {
       return RestaurantResult.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load data Restaurant');
+    }
+  }
+
+  Future<DetailRestaurantResult> getDetailRestaurant(String id) async {
+    final response = await http.get(detail + id);
+    if (response.statusCode == 200) {
+      return DetailRestaurantResult.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Detail Restaurants');
     }
   }
 }

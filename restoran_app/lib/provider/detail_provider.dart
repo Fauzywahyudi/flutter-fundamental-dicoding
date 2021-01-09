@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:restoran_app/api/api_restaurant.dart';
 import 'package:restoran_app/models/detail_restaurant.dart';
-import 'package:http/http.dart' as http;
 import 'package:restoran_app/models/restaurant.dart';
 import 'package:restoran_app/provider/cek_koneksi.dart';
 import 'package:restoran_app/provider/data_shared.dart';
@@ -62,7 +59,7 @@ class DetailProvider extends ChangeNotifier {
         notifyListeners();
         return _message = connection.message;
       }
-      final restaurant = await getDetailRestaurant();
+      final restaurant = await apiService.getDetailRestaurant(id);
       if (restaurant.restaurant == null) {
         _state = ResultState.NoData;
         notifyListeners();
@@ -78,15 +75,6 @@ class DetailProvider extends ChangeNotifier {
       _state = ResultState.Error;
       notifyListeners();
       return _message = 'Error --> $e';
-    }
-  }
-
-  Future<DetailRestaurantResult> getDetailRestaurant() async {
-    final response = await http.get(ApiService.detail + id);
-    if (response.statusCode == 200) {
-      return DetailRestaurantResult.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load Detail Restaurants');
     }
   }
 

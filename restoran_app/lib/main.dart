@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restoran_app/pages/detail/detail_page.dart';
+import 'package:restoran_app/pages/favorite/add_favorite.dart';
 import 'package:restoran_app/pages/favorite/favorite.dart';
 import 'package:restoran_app/pages/home/home.dart';
 import 'package:restoran_app/pages/search/search_page.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         HomePage.routeName: (context) => HomePage(),
         SearchPage.routeName: (context) => SearchPage(),
         Favorite.routeName: (context) => Favorite(),
+        AddFavorite.routeName: (context) => AddFavorite(),
         DetailPage.routeName: (context) => DetailPage(
               id: ModalRoute.of(context).settings.arguments,
             ),
