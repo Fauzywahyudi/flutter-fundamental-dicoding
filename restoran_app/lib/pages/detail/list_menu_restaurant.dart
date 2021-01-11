@@ -18,10 +18,13 @@ class ListBuilderMenu extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 24, top: 8),
               child: Text(
                 title,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(height: 10),
@@ -29,6 +32,7 @@ class ListBuilderMenu extends StatelessWidget {
               height: 150,
               width: MediaQuery.of(context).size.width,
               child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 scrollDirection: Axis.horizontal,
                 itemCount: title == "Makanan"
                     ? state.result.restaurant.menus.foods.length

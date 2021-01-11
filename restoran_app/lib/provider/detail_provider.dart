@@ -36,7 +36,7 @@ class DetailProvider extends ChangeNotifier {
   bool get proses => _proses;
   bool get isFavorite => _isFavorite;
   bool get isShrink =>
-      _controller.hasClients && _controller.offset > (240 - kToolbarHeight);
+      _controller.hasClients && _controller.offset > (220 - kToolbarHeight);
   void _scrollListener() {
     if (isShrink != _lastStatus) {
       _lastStatus = isShrink;

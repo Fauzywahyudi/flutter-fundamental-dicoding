@@ -8,27 +8,27 @@ class MySliverAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = Provider.of<DetailProvider>(context);
     return SliverAppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: state.isShrink ? Colors.blue : Colors.white,
       expandedHeight: 240,
       pinned: true,
       title: Text(
         state.isShrink ? state.result.restaurant.name : '',
-        style: TextStyle(color: Colors.blue),
+        style: TextStyle(color: Colors.white),
       ),
       leading: CircleAvatar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blue,
         child: IconButton(
-          color: Colors.blue,
-          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.white,
+          icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       actions: [
         state.isShrink
             ? CircleAvatar(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.blue,
                 child: IconButton(
-                  color: Colors.blue,
+                  color: Colors.white,
                   icon: Icon(state.isFavorite
                       ? Icons.favorite
                       : Icons.favorite_border),
@@ -46,7 +46,7 @@ class MySliverAppBar extends StatelessWidget {
           children: [
             Container(
               color: Colors.blue,
-              height: 200,
+              height: kToolbarHeight,
             ),
             SafeArea(
               child: Container(

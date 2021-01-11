@@ -12,11 +12,11 @@ class ItemListMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = Provider.of<DetailProvider>(context);
     return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
+      width: MediaQuery.of(context).size.width * 0.7,
       height: 140,
       decoration: BoxDecoration(
-        color: Colors.blue[200],
-        borderRadius: BorderRadius.circular(20),
+        color: Colors.blue[100],
+        borderRadius: BorderRadius.circular(10),
       ),
       margin: EdgeInsets.symmetric(horizontal: 5),
       child: Stack(
@@ -25,11 +25,11 @@ class ItemListMenu extends StatelessWidget {
             child: Icon(
               Icons.fastfood,
               size: 70,
-              color: Colors.white,
+              color: Colors.blue,
             ),
           ),
           Positioned(
-            bottom: 10,
+            top: 10,
             left: 10,
             child: Text(
               tipe == "Makanan"
@@ -37,8 +37,8 @@ class ItemListMenu extends StatelessWidget {
                   : state.result.restaurant.menus.drinks[index].name,
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
-                  .apply(color: Colors.white),
+                  .bodyText1
+                  .copyWith(color: Colors.blue, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ),
