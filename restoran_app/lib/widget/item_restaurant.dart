@@ -15,16 +15,15 @@ class ItemRestaurant extends StatelessWidget {
         onTap: () => Navigator.pushNamed(context, DetailPage.routeName,
             arguments: restaurant.id),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(5),
-              margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-              width: 120,
-              height: 120,
+              margin: EdgeInsets.all(8),
+              width: 100,
+              height: 100,
               decoration: BoxDecoration(
                 color: Colors.blue[200],
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(5),
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
@@ -34,17 +33,20 @@ class ItemRestaurant extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              height: 100,
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(height: 15),
                   Text(
                     restaurant.name,
                     style: GoogleFonts.mcLaren(
-                        fontSize: 17, fontWeight: FontWeight.bold),
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
                   ),
-                  SizedBox(height: 5),
                   Row(
                     children: [
                       Icon(
@@ -56,11 +58,11 @@ class ItemRestaurant extends StatelessWidget {
                         restaurant.city,
                         style: GoogleFonts.roboto(
                           fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 15),
                   Row(
                     children: [
                       Icon(
@@ -72,6 +74,7 @@ class ItemRestaurant extends StatelessWidget {
                         restaurant.rating.toString(),
                         style: GoogleFonts.roboto(
                           fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],

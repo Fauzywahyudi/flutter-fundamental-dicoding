@@ -28,6 +28,22 @@ class ApiService {
     }
   }
 
+  Future<List<Restaurant>> getSearch(String query) async {
+    String api;
+    if (query == null || query == '') {
+      api = list;
+    } else {
+      api = search + query;
+    }
+    final response = await http.get(api);
+    if (response.statusCode == 200) {
+      final result = RestaurantResult.fromJson(json.decode(response.body));
+      return result.restaurants;
+    } else {
+      throw Exception('Failed to load data Restaurant');
+    }
+  }
+
   Future<DetailRestaurantResult> getDetailRestaurant(String id) async {
     final response = await http.get(detail + id);
     if (response.statusCode == 200) {

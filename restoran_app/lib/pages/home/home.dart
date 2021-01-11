@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restoran_app/pages/favorite/favorite.dart';
+import 'package:restoran_app/pages/search/search.dart';
 import 'package:restoran_app/pages/search/search_page.dart';
 import 'package:restoran_app/provider/restaurant_provider.dart';
 import 'package:restoran_app/themes/text_themes.dart';
@@ -92,7 +93,10 @@ class HomePage extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.search),
           tooltip: 'Search Restaurant',
-          onPressed: () => Navigator.pushNamed(context, SearchPage.routeName),
+          onPressed: () => showSearch(
+            context: context,
+            delegate: CustomSearchDelegate(),
+          ),
         ),
       ],
       flexibleSpace: FlexibleSpaceBar(
