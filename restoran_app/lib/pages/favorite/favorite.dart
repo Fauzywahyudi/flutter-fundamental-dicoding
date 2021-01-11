@@ -24,7 +24,7 @@ class Favorite extends StatelessWidget {
         }),
         body: NestedScrollView(
           headerSliverBuilder: (context, isScroll) {
-            return [_buildSliverAppBar()];
+            return [_buildSliverAppBar(context)];
           },
           body: Consumer<FavoriteProvider>(
             builder: (context, state, _) {
@@ -106,81 +106,48 @@ class Favorite extends StatelessWidget {
     );
   }
 
-  SliverAppBar _buildSliverAppBar() {
+  SliverAppBar _buildSliverAppBar(BuildContext context) {
     return SliverAppBar(
       pinned: true,
       floating: true,
       snap: true,
-      expandedHeight: 150,
+      expandedHeight: 200,
       flexibleSpace: FlexibleSpaceBar(
         title: Text('Favorites'),
+        background: Stack(
+          children: [
+            SafeArea(
+              child: Container(
+                height: 200,
+                width: MediaQuery.of(context).size.width,
+                child: Image.asset(
+                  'assets/images/ikon.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Positioned(
+              right: 50,
+              top: 50,
+              child: Container(
+                height: 80,
+                width: 80,
+                child: Image.asset(
+                  'assets/images/favorite.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SafeArea(
+              child: Container(
+                height: 200,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.blue.withOpacity(0.4),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 }
-
-// class DialogAddFavorite extends StatefulWidget {
-//   @override
-//   _DialogAddFavoriteState createState() => _DialogAddFavoriteState();
-// }
-
-// class _DialogAddFavoriteState extends State<DialogAddFavorite> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider<RestaurantProvider>(
-//             lazy: true, create: (_) => RestaurantProvider(context)),
-//         ChangeNotifierProvider<FavoriteProvider>(
-//             create: (_) => FavoriteProvider(context)),
-//       ],
-//       child: AlertDialog(
-//         title: Text('Add Favorite'),
-//         content: SingleChildScrollView(
-//           child: Consumer<RestaurantProvider>(builder: (context, state, _) {
-//             if (state.state == ResultState.Loading) {
-//               return Center(child: CircularProgressIndicator());
-//             } else if (state.state == ResultState.HasData) {
-//               print(state.result.restaurants[0].name);
-//               return Container();
-//               // return Container(
-//               //   height: MediaQuery.of(context).size.width * 0.5,
-//               //   child: ListView.builder(
-//               //     itemCount: state.result.restaurants.length,
-//               //     itemBuilder: (context, index) {
-//               //       return ListTile(
-//               //         title: Text(state.result.restaurants[index].name),
-//               //       );
-//               //     },
-//               //   ),
-//               // );
-//             } else if (state.state == ResultState.NoData) {
-//               return Center(child: Text(state.message));
-//             } else if (state.state == ResultState.Error) {
-//               return Center(child: Text(state.message));
-//             } else if (state.state == ResultState.NoConnection) {
-//               return Container(
-//                 width: MediaQuery.of(context).size.width,
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.center,
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Text(state.message, style: labelConnection),
-//                     SizedBox(height: 30),
-//                     RaisedButton(
-//                       onPressed: () => state.refresh(),
-//                       color: Colors.blue[200],
-//                       child: Text('Refresh'),
-//                     )
-//                   ],
-//                 ),
-//               );
-//             } else {
-//               return Center(child: Text(''));
-//             }
-//           }),
-//         ),
-//       ),
-//     );
-//   }
-// }

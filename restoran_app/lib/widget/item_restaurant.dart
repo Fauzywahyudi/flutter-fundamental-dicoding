@@ -10,10 +10,10 @@ class ItemRestaurant extends StatelessWidget {
   const ItemRestaurant({this.restaurant});
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.pushNamed(context, DetailPage.routeName,
-          arguments: restaurant.id),
-      child: Card(
+    return Card(
+      child: InkWell(
+        onTap: () => Navigator.pushNamed(context, DetailPage.routeName,
+            arguments: restaurant.id),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
