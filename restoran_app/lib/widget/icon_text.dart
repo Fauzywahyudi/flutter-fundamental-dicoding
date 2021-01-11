@@ -14,12 +14,16 @@ class IconText extends StatelessWidget {
       children: [
         Icon(
           icon,
+          size: 35,
           color: color,
         ),
         SizedBox(width: 5),
         Text(
           value,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context)
+              .textTheme
+              .headline5
+              .copyWith(fontWeight: FontWeight.bold),
         ),
       ],
     );

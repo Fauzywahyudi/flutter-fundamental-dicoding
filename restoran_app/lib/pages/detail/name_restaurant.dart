@@ -14,11 +14,15 @@ class RestaurantName extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              state.result.restaurant.name,
-              style: Theme.of(context).textTheme.headline5.apply(
-                    color: Colors.blue,
-                  ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                state.result.restaurant.name,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    .copyWith(color: Colors.blue, fontWeight: FontWeight.bold),
+              ),
             ),
             SizedBox(height: 10),
             Row(
