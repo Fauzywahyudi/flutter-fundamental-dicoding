@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restoran_app/pages/favorite/favorite.dart';
+import 'package:restoran_app/pages/profile/profile.dart';
 import 'package:restoran_app/pages/search/search.dart';
-import 'package:restoran_app/pages/search/search_page.dart';
 import 'package:restoran_app/provider/restaurant_provider.dart';
 import 'package:restoran_app/themes/text_themes.dart';
 import 'package:restoran_app/widget/item_restaurant.dart';
@@ -71,16 +71,22 @@ class HomePage extends StatelessWidget {
       floating: true,
       expandedHeight: 200,
       leading: CircleAvatar(
-        child: Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/ikon.png',
-                ),
-                fit: BoxFit.cover),
+        child: InkWell(
+          onTap: () => Navigator.pushNamed(context, Profile.routeName),
+          child: Hero(
+            tag: 'ikonapp',
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: AssetImage(
+                      'assets/images/ikon.png',
+                    ),
+                    fit: BoxFit.cover),
+              ),
+            ),
           ),
         ),
       ),
