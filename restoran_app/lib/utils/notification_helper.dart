@@ -1,10 +1,8 @@
 import 'dart:convert';
-
-import 'package:dicoding_news_app/common/navigation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:restoran_app/common/navigation.dart';
+import 'package:restoran_app/models/restaurant.dart';
 import 'package:rxdart/subjects.dart';
-
-import '../data/model/article.dart';
 
 final selectNotificationSubject = BehaviorSubject<String>();
 
@@ -42,7 +40,7 @@ class NotificationHelper {
 
   Future<void> showNotification(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
-      ArticlesResult articles) async {
+      RestaurantResult restaurantResult) async {
     var _channelId = "1";
     var _channelName = "channel_01";
     var _channelDescription = "dicoding news channel";
@@ -58,20 +56,20 @@ class NotificationHelper {
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
-    var titleNotification = "<b>Headline News</b>";
-    var titleNews = articles.articles[0].title;
+    var titleNotification = "<b>Best Restaurant</b>";
+    var titleNews = restaurantResult.restaurants[0].name;
 
     await flutterLocalNotificationsPlugin.show(
         0, titleNotification, titleNews, platformChannelSpecifics,
-        payload: json.encode(articles.toJson()));
+        payload: json.encode(restaurantResult.toJson()));
   }
 
   void configureSelectNotificationSubject(String route) {
     selectNotificationSubject.stream.listen(
       (String payload) async {
-        var data = ArticlesResult.fromJson(json.decode(payload));
-        var article = data.articles[0];
-        Navigation.intentWithData(route, article);
+        var data = RestaurantResult.fromJson(json.decode(payload));
+        var restaurant = data.restaurants[0];
+        Navigation.intentWithData(route, restaurant);
       },
     );
   }
