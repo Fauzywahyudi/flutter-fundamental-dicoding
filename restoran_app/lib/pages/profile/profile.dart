@@ -1,46 +1,48 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:restoran_app/provider/profile_provider.dart';
+import 'package:restoran_app/provider/scheduling_provider.dart';
 
 class Profile extends StatelessWidget {
   static const routeName = '/profile';
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ProfileProvider>(
-      create: (_) => ProfileProvider(),
+    return ChangeNotifierProvider<SchedulingProvider>(
+      create: (_) => SchedulingProvider(),
       child: Scaffold(
         body: NestedScrollView(
-          headerSliverBuilder: (context, isScroll) {
-            return [
-              _buildSliverAppBar(context),
-            ];
-          },
-          body: Consumer<ProfileProvider>(builder: (context, state, _) {
-            return Card(
+            headerSliverBuilder: (context, isScroll) {
+              return [
+                _buildSliverAppBar(context),
+              ];
+            },
+            body: Card(
               child: Column(
                 children: [
-                  SwitchListTile(
-                    title: Text(
-                      'Reminder',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                  Material(
+                    child: ListTile(
+                      title: Text('Scheduling Restaurants'),
+                      trailing: Consumer<SchedulingProvider>(
+                        builder: (context, scheduled, _) {
+                          return Switch.adaptive(
+                            value: scheduled.isScheduled,
+                            onChanged: (value) async {
+                              if (Platform.isIOS) {
+                                print('comming soon');
+                              } else {
+                                scheduled.scheduledNews(value);
+                              }
+                            },
+                          );
+                        },
+                      ),
                     ),
-                    value: state.isRemind,
-                    onChanged: (value) => state.onChangeRemind(value),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Show Notifikasi',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    // onTap: () =>
-                    //     state.showNotification(flutterLocalNotificationsPlugin),
                   ),
                 ],
               ),
-            );
-          }),
-        ),
+            )),
       ),
     );
   }

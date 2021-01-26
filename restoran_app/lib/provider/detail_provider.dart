@@ -9,14 +9,13 @@ enum ResultState { Loading, NoData, HasData, Error, NoConnection }
 
 class DetailProvider extends ChangeNotifier {
   final String id;
-  final BuildContext context;
 
-  DetailProvider(this.context, {@required this.id}) {
+  DetailProvider({@required this.id}) {
     _fetchDataDetailRestaurant();
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
   }
-
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final apiService = ApiService();
   final cekConnection = CheckConnection();
   final dataShared = DataShared();
@@ -53,7 +52,8 @@ class DetailProvider extends ChangeNotifier {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final connection = await cekConnection.checkConnection(context);
+      final connection =
+          await cekConnection.checkConnection(navigatorKey.currentContext);
       if (!connection.isConnected) {
         _state = ResultState.NoConnection;
         notifyListeners();

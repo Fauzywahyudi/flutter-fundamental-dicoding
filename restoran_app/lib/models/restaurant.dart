@@ -76,13 +76,13 @@ class Restaurant {
         address: json["address"] == null ? null : json["address"],
         pictureId: json["pictureId"],
         categories: json["categories"] == null
-            ? null
+            ? []
             : List<Category>.from(
                 json["categories"].map((x) => Category.fromJson(x))),
         menus: json["menus"] == null ? null : Menus.fromJson(json["menus"]),
         rating: json["rating"].toDouble(),
         customerReviews: json["customerReviews"] == null
-            ? null
+            ? []
             : List<CustomerReview>.from(
                 json["customerReviews"].map((x) => CustomerReview.fromJson(x))),
       );
@@ -95,9 +95,10 @@ class Restaurant {
         "address": address,
         "pictureId": pictureId,
         "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
-        "menus": menus.toJson(),
+        "menus": menus == null ? '' : menus.toJson(),
         "rating": rating,
-        "customerReviews":
-            List<dynamic>.from(customerReviews.map((x) => x.toJson())),
+        "customerReviews": customerReviews == null
+            ? ''
+            : List<dynamic>.from(customerReviews.map((x) => x.toJson())),
       };
 }

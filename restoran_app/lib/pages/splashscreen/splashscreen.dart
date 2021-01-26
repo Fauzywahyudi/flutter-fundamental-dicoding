@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:restoran_app/pages/detail/detail_page.dart';
 import 'package:restoran_app/pages/home/home.dart';
+import 'package:restoran_app/utils/background_service.dart';
+import 'package:restoran_app/utils/notification_helper.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = '/splashscreen';
@@ -10,11 +13,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  // final NotificationHelper _notificationHelper = NotificationHelper();
+  // final BackgroundService _service = BackgroundService();
+
   @override
   void initState() {
     Timer(Duration(seconds: 4),
         () => Navigator.pushReplacementNamed(context, HomePage.routeName));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

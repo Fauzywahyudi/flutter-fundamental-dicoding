@@ -10,7 +10,7 @@ class Favorite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<FavoriteProvider>(
-      create: (_) => FavoriteProvider(context),
+      create: (_) => FavoriteProvider(),
       child: Scaffold(
         floatingActionButton:
             Consumer<FavoriteProvider>(builder: (context, state, _) {

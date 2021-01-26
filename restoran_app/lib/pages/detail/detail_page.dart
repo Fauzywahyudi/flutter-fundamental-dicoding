@@ -13,7 +13,7 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<DetailProvider>(
-      create: (_) => DetailProvider(context, id: id),
+      create: (_) => DetailProvider(id: id),
       child: Scaffold(
         body: Consumer<DetailProvider>(
           builder: (context, state, _) {

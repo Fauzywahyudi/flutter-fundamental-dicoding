@@ -9,11 +9,11 @@ enum ResultState { Loading, NoData, HasData, Error, NoConnection }
 enum FavoriteState { Loading, NoData, HasData, Error, NoConnection }
 
 class RestaurantProvider extends ChangeNotifier {
-  final BuildContext context;
-  RestaurantProvider(this.context) {
+  RestaurantProvider() {
     _fetchDataFavorite();
     _fetchDataRestaurant();
   }
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final apiService = ApiService();
   final cekConnection = CheckConnection();
   final dataShared = DataShared();
@@ -55,7 +55,8 @@ class RestaurantProvider extends ChangeNotifier {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final connection = await cekConnection.checkConnection(context);
+      final connection =
+          await cekConnection.checkConnection(navigatorKey.currentContext);
       if (!connection.isConnected) {
         _state = ResultState.NoConnection;
         notifyListeners();
@@ -83,7 +84,8 @@ class RestaurantProvider extends ChangeNotifier {
       _state = ResultState.Loading;
       _favoriteState = FavoriteState.Loading;
       notifyListeners();
-      final connection = await cekConnection.checkConnection(context);
+      final connection =
+          await cekConnection.checkConnection(navigatorKey.currentContext);
       if (!connection.isConnected) {
         _favoriteState = FavoriteState.NoConnection;
         notifyListeners();
@@ -112,7 +114,7 @@ class RestaurantProvider extends ChangeNotifier {
       notifyListeners();
       await fetchDataDetailRestaurant(data.id);
       final success = await dataShared.setDataFavorite(detailRestaurant);
-      if (success) Navigator.pop(context, true);
+      if (success) Navigator.pop(navigatorKey.currentContext, true);
       _isProses = false;
       notifyListeners();
     } catch (e) {
@@ -124,7 +126,8 @@ class RestaurantProvider extends ChangeNotifier {
     try {
       _state = ResultState.Loading;
       notifyListeners();
-      final connection = await cekConnection.checkConnection(context);
+      final connection =
+          await cekConnection.checkConnection(navigatorKey.currentContext);
       if (!connection.isConnected) {
         _state = ResultState.NoConnection;
         notifyListeners();

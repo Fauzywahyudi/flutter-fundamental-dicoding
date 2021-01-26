@@ -9,13 +9,13 @@ import 'package:restoran_app/provider/data_shared.dart';
 enum FavoriteState { Loading, NoData, HasData, Error, NoConnection }
 
 class FavoriteProvider extends ChangeNotifier {
-  final BuildContext context;
-  FavoriteProvider(this.context) {
+  FavoriteProvider() {
     _fetchDataFavorite();
   }
   final apiService = ApiService();
   final cekConnection = CheckConnection();
   final dataShared = DataShared();
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   String _message = '';
   String _query = '';
@@ -49,7 +49,8 @@ class FavoriteProvider extends ChangeNotifier {
     try {
       _state = FavoriteState.Loading;
       notifyListeners();
-      final connection = await cekConnection.checkConnection(context);
+      final connection =
+          await cekConnection.checkConnection(navigatorKey.currentContext);
       if (!connection.isConnected) {
         _state = FavoriteState.NoConnection;
         notifyListeners();

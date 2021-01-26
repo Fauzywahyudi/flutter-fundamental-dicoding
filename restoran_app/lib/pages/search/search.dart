@@ -120,6 +120,7 @@ class CustomSearchDelegate extends SearchDelegate {
                           itemBuilder: (context, index) {
                             return ListTile(
                               title: Text(snapshot.data[index].name),
+                              onTap: () => query = snapshot.data[index].name,
                             );
                           },
                         ),

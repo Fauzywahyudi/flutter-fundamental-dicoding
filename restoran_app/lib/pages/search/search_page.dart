@@ -16,7 +16,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<RestaurantProvider>(
-      create: (_) => RestaurantProvider(context),
+      create: (_) => RestaurantProvider(),
       child: Scaffold(body: Consumer<RestaurantProvider>(
         builder: (context, state, _) {
           if (state.state == ResultState.Loading) {

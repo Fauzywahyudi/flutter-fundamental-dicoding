@@ -18,9 +18,9 @@ class _AddFavoriteState extends State<AddFavorite> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<RestaurantProvider>(
-            lazy: true, create: (_) => RestaurantProvider(context)),
+            lazy: true, create: (_) => RestaurantProvider()),
         ChangeNotifierProvider<FavoriteProvider>(
-            create: (_) => FavoriteProvider(context)),
+            create: (_) => FavoriteProvider()),
       ],
       child: Scaffold(
         appBar: AppBar(

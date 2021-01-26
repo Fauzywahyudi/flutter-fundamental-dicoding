@@ -1,18 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restoran_app/pages/detail/detail_page.dart';
 import 'package:restoran_app/pages/favorite/favorite.dart';
 import 'package:restoran_app/pages/profile/profile.dart';
 import 'package:restoran_app/pages/search/search.dart';
 import 'package:restoran_app/provider/restaurant_provider.dart';
 import 'package:restoran_app/themes/text_themes.dart';
+import 'package:restoran_app/utils/background_service.dart';
+import 'package:restoran_app/utils/notification_helper.dart';
 import 'package:restoran_app/widget/item_restaurant.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const routeName = '/home_page';
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final NotificationHelper _notificationHelper = NotificationHelper();
+  final BackgroundService _service = BackgroundService();
+  @override
+  void initState() {
+    port.listen((_) async => await _service.someTask());
+    _notificationHelper
+        .configureSelectNotificationSubject(DetailPage.routeName);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    selectNotificationSubject.close();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<RestaurantProvider>(
-      create: (_) => RestaurantProvider(context),
+      create: (_) => RestaurantProvider(),
       child: NestedScrollView(
         headerSliverBuilder: (context, isScroll) {
           return [_buildSliverAppBar(context)];
