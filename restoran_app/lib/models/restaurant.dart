@@ -79,7 +79,9 @@ class Restaurant {
             ? []
             : List<Category>.from(
                 json["categories"].map((x) => Category.fromJson(x))),
-        menus: json["menus"] == null ? null : Menus.fromJson(json["menus"]),
+        menus: json["menus"] == null || json["menus"] == ""
+            ? null
+            : Menus.fromJson(json["menus"]),
         rating: json["rating"].toDouble(),
         customerReviews: json["customerReviews"] == null
             ? []
