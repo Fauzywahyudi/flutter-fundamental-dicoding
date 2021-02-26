@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:restoran_app/api/api_restaurant.dart';
 import 'package:restoran_app/models/detail_restaurant.dart';
 import 'package:restoran_app/models/restaurant.dart';
 import 'package:restoran_app/provider/cek_koneksi.dart';

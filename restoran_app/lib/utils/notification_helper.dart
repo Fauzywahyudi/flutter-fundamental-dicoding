@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:restoran_app/common/navigation.dart';
 import 'package:restoran_app/models/restaurant.dart';
 import 'package:rxdart/subjects.dart';
 

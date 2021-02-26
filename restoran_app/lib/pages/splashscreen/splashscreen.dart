@@ -1,10 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:restoran_app/pages/detail/detail_page.dart';
 import 'package:restoran_app/pages/home/home.dart';
-import 'package:restoran_app/utils/background_service.dart';
-import 'package:restoran_app/utils/notification_helper.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = '/splashscreen';
